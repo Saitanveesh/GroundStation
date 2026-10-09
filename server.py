@@ -96,7 +96,7 @@ def demo_seed(db):
         db.execute("""INSERT INTO tracks
           (id,label,source,aircraft_type,lat,lon,alt_m,heading,speed_ms,claimed_identity,identity_state,association_state,authorization_state,observed_at,is_demo)
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,1)""", (*t, now_iso()))
-    db.execute("""INSERT INTO sensors(id,label,type,status,last_seen,is_demo) VALUES
+    db.execute("""INSERT OR IGNORE INTO sensors(id,label,type,status,last_seen,is_demo) VALUES
       ('SEN-CAM-01','Perimeter Camera A','Optical','demo',?,1),
       ('SEN-RID-01','Remote ID Receiver','Remote ID','demo',?,1),
       ('SEN-RF-01','RF Observation Adapter','RF','not_connected',NULL,0)""", (now_iso(), now_iso()))
@@ -296,7 +296,8 @@ def complete_challenge(inp: ProofIn):
         db.execute("UPDATE challenges SET used=1 WHERE id=? AND used=0", (inp.challenge_id,))
         if challenge["expires_at"] < time.time():
             audit(db, "PROOF_EXPIRED", "Expired proof for " + challenge["identity_id"], "attention")
-            raise HTTPException(410, "Challenge expired")
+            return {"verified":False,"identity_id":challenge["identity_id"],"reason":"challenge_expired",
+                    "physical_track_bound":False,"hardware_protection_verified":False}
         identity = db.execute("SELECT * FROM identities WHERE id=?", (challenge["identity_id"],)).fetchone()
         if not identity or identity["status"] != "active":
             audit(db, "PROOF_REJECTED", "Revoked or missing identity", "attention")
