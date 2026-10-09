@@ -22,4 +22,4 @@ jobs:
       - name: Browser JavaScript syntax
         run: node --check web/app.js
       - name: Cryptography, policy, audit and API tests
-        run: pytest -v tests/
+        run: python -m pytest -v tests/
