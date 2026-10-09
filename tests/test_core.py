@@ -150,7 +150,7 @@ def test_web_shell_and_assets_are_served(appclient):
     assert home.status_code == 200
     assert "HROT AirTrust" in home.text
     assert "operationalMap" in home.text
-    assert "MISSION" in home.text
+    assert "Mission Permits" in home.text
     css=client.get("/assets/app.css")
     js=client.get("/assets/app.js")
     assert css.status_code == 200 and "--accent:" in css.text
