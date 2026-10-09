@@ -142,3 +142,37 @@ def test_evidence_chain_detects_modification(appclient):
     with sqlite3.connect(server.DB_PATH) as db:
         db.execute("UPDATE evidence SET detail=? WHERE seq=?",(original,seq))
     assert client.get("/api/evidence/check").json()["valid"] is True
+
+
+def test_web_shell_and_assets_are_served(appclient):
+    client, _ = appclient
+    home=client.get("/")
+    assert home.status_code == 200
+    assert "HROT AirTrust" in home.text
+    assert "operationalMap" in home.text
+    assert "MISSION" in home.text
+    css=client.get("/assets/app.css")
+    js=client.get("/assets/app.js")
+    assert css.status_code == 200 and "--accent:" in css.text
+    assert js.status_code == 200 and "renderMap()" in js.text
+
+
+def test_expired_challenge_consumed_once(appclient):
+    client, server = appclient
+    private = Ed25519PrivateKey.generate()
+    public=base64.b64encode(private.public_key().public_bytes(
+        encoding=serialization.Encoding.Raw,format=serialization.PublicFormat.Raw)).decode()
+    assert client.post("/api/identities",json={
+        "id":"EXPIRE-KEY","label":"Expiry test","issuer":"Lab",
+        "public_key":public
+    }).status_code == 201
+    challenge=client.post("/api/verify/challenge",json={"identity_id":"EXPIRE-KEY"}).json()
+    with sqlite3.connect(server.DB_PATH) as db:
+        db.execute("UPDATE challenges SET expires_at=1 WHERE id=?",(challenge["challenge_id"],))
+    signature=base64.b64encode(private.sign(challenge["transcript"].encode())).decode()
+    payload={"challenge_id":challenge["challenge_id"],"signature":signature}
+    result=client.post("/api/verify/complete",json=payload)
+    assert result.status_code == 200
+    assert result.json()["verified"] is False
+    assert result.json()["reason"] == "challenge_expired"
+    assert client.post("/api/verify/complete",json=payload).status_code == 409
