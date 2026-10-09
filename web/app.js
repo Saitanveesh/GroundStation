@@ -159,13 +159,13 @@
     };
   }
   function missionForm(){
-    const isoLocal=new Date(Date.now()+3600000).toISOString().slice(0,16);
+    const toLocalInput = dt => new Date(dt.getTime()-dt.getTimezoneOffset()*60000).toISOString().slice(0,16);const isoLocal=toLocalInput(new Date(Date.now()+3600000));const endLocal=toLocalInput(new Date(Date.now()+7200000));
     modal("Create mission permit",fieldsForm([
       {name:"title",label:"MISSION NAME",placeholder:"e.g. Rooftop inspection"},
       {name:"identity_id",label:"DECLARED DEVICE ID",placeholder:"e.g. CONTRACT-02"},
       {name:"location",label:"AUTHORIZED LOCATION",value:"Training Sector 7"},
       {name:"start_time",label:"START TIME (LOCAL)",type:"datetime-local",value:isoLocal},
-      {name:"end_time",label:"END TIME (LOCAL)",type:"datetime-local"}
+      {name:"end_time",label:"END TIME (LOCAL)",type:"datetime-local",value:endLocal}
     ],"Create pending permit"));
     wireForm(d=>api("/missions",{method:"POST",body:JSON.stringify({...d,start_time:new Date(d.start_time).toISOString(),end_time:new Date(d.end_time).toISOString()})}));
   }
