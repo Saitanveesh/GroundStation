@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#071520">
+  <title>HROT AirTrust | Ground Station</title>
+  <link rel="stylesheet" href="/assets/app.css">
+</head>
+<body>
+<svg aria-hidden="true" class="sprite" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  <symbol id="i-radar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M12 12l7-7M12 3v9h9"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 8 4v6c0 5-3 8-8 10-5-2-8-5-8-10V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M6 16V8a4 4 0 0 1 4-4h4M10 20h5a5 5 0 0 0 5-5v-5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2z"/><path d="M12 9v5M12 17v.1"/></symbol>
+  <symbol id="i-log" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+  <symbol id="i-radio" viewBox="0 0 24 24"><path d="M12 18v4m-5-2h10M12 2v5m-5.5-.5a8 8 0 0 0 0 11m11-11a8 8 0 0 1 0 11M9 9a4 4 0 0 0 0 6m6-6a4 4 0 0 1 0 6"/><circle cx="12" cy="13" r="1"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5 21 12l-2-1.5-.5-2.3-2.3-.4L15 5l-3 1-3-1-1.2 2.8-2.3.4L5 10.5 3 12l2 1.5.5 2.3 2.3.4L9 19l3-1 3 1 1.2-2.8 2.3-.4z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 17v3h16v-3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-4 1 2-5z"/></symbol>
+</svg>
+
+<div id="shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark"><svg><use href="#i-shield"/></svg></div><div class="brand-type"><strong>HROT<span> / AirTrust</span></strong><small>GROUND SECURITY SYSTEM</small></div></div>
+    <div class="top-divider"></div>
+    <div class="top-context"><span class="breadcrumb">WORKSPACE</span><span class="slash">/</span><span id="sectionTitle">Airspace Overview</span></div>
+    <div class="top-right">
+      <div class="system-pill"><span class="pulse-dot"></span>CORE ONLINE</div>
+      <span id="modeTop" class="mode-pill">DEMO ENVIRONMENT</span>
+      <div class="utc"><span>UTC</span><strong id="utcClock">--:--:--</strong></div>
+      <button class="icon-button" title="Refresh" id="refreshBtn"><svg><use href="#i-refresh"/></svg></button>
+    </div>
+  </header>
+  <div class="layout">
+    <aside class="rail">
+      <div class="rail-group">
+        <div class="rail-label">OPERATIONS</div>
+        <button class="rail-link active" data-nav="overview" title="Airspace overview"><svg><use href="#i-grid"/></svg><span>Overview</span></button>
+        <button class="rail-link" data-nav="tracks" title="Observed aircraft"><svg><use href="#i-radar"/></svg><span>Tracks</span></button>
+        <button class="rail-link" data-nav="missions" title="Mission permits"><svg><use href="#i-route"/></svg><span>Missions</span></button>
+        <button class="rail-link" data-nav="identities" title="Identity registry"><svg><use href="#i-shield"/></svg><span>Identities</span></button>
+        <button class="rail-link" data-nav="incidents" title="Incident desk"><svg><use href="#i-alert"/></svg><span>Incidents</span></button>
+      </div>
+      <div class="rail-group rail-bottom">
+        <div class="rail-label">SYSTEM</div>
+        <button class="rail-link" data-nav="sensors" title="Sensor inputs"><svg><use href="#i-radio"/></svg><span>Sensors</span></button>
+        <button class="rail-link" data-nav="evidence" title="Evidence ledger"><svg><use href="#i-log"/></svg><span>Evidence</span></button>
+        <div class="rail-footer">HROT <b>0.1</b><small>LOCAL-FIRST</small></div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <div class="demo-banner" id="demoBanner"><span class="banner-dot"></span><b>TRAINING MODE</b><span>All starter tracks and observations are synthetic. No real aircraft, RF receiver or camera is connected.</span><button id="dismissBanner" title="Dismiss banner">×</button></div>
+      <section class="page visible" id="page-overview">
+        <div class="page-header compact">
+          <div><div class="eyebrow">TACTICAL WORKSPACE / 01</div><h1>Airspace Overview</h1><p>Identity assurance, observation coverage and operational awareness</p></div>
+          <div class="header-actions"><span class="timestamp"><span class="live-pin"></span><span id="syncTime">Awaiting service</span></span><button class="btn outline" id="scenarioBtn">Training scenarios <span>⌄</span></button></div>
+        </div>
+        <div class="metric-grid">
+          <div class="metric-card"><div class="metric-name">OBSERVED TRACKS <svg><use href="#i-radar"/></svg></div><div class="metric-num" id="statTracks">—</div><div class="metric-foot"><span class="mini-dot aqua"></span> Across connected / demo feeds</div></div>
+          <div class="metric-card"><div class="metric-name">UNRESOLVED ASSOCIATIONS <svg><use href="#i-alert"/></svg></div><div class="metric-num" id="statUnresolved">—</div><div class="metric-foot"><span class="mini-dot amber"></span> Require independent corroboration</div></div>
+          <div class="metric-card"><div class="metric-name">AUTHORIZED OBSERVATIONS <svg><use href="#i-shield"/></svg></div><div class="metric-num" id="statAuthorized">—</div><div class="metric-foot"><span class="mini-dot aqua"></span> Policy state, not threat classification</div></div>
+          <div class="metric-card"><div class="metric-name">OPEN INCIDENTS <svg><use href="#i-log"/></svg></div><div class="metric-num" id="statIncidents">—</div><div class="metric-foot"><span class="mini-dot amber"></span> In operator queue</div></div>
+        </div>
+        <div class="ops-grid">
+          <div class="map-panel">
+            <div class="panel-top"><div><span class="eyebrow">GEO-SPATIAL OBSERVATION</span><h2>Operational Map <span class="section-pill">SCHEMATIC</span></h2></div><div class="map-panel-actions"><button class="small-icon" id="zoomIn" title="Zoom in">+</button><button class="small-icon" id="zoomOut" title="Zoom out">−</button><button class="small-icon" id="mapReset" title="Reset view"><svg><use href="#i-compass"/></svg></button></div></div>
+            <div class="map-stage">
+              <svg id="operationalMap" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Schematic observation sector map">
+                <defs>
+                  <pattern id="map-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#213d4b" stroke-width=".8" opacity=".55"/></pattern>
+                  <pattern id="map-grid-lg" width="160" height="160" patternUnits="userSpaceOnUse"><path d="M160 0H0V160" fill="none" stroke="#355366" stroke-width="1" opacity=".5"/></pattern>
+                  <radialGradient id="map-vignette"><stop offset="0%" stop-color="#17313d"/><stop offset="100%" stop-color="#0d202c"/></radialGradient>
+                </defs>
+                <rect width="1000" height="620" fill="url(#map-vignette)"/>
+                <g opacity=".28">
+                  <path d="M0 100Q100 60 230 110T540 160T1000 76" fill="none" stroke="#4c6b68" stroke-width="36"/>
+                  <path d="M0 100Q100 60 230 110T540 160T1000 76" fill="none" stroke="#7ca396" stroke-width="1.5"/>
+                  <path d="M50 600 Q160 440 330 470T770 290T1040 340" fill="none" stroke="#355f77" stroke-width="18"/>
+                  <path d="M50 600 Q160 440 330 470T770 290T1040 340" fill="none" stroke="#6a95ac" stroke-width="1.5"/>
+                  <path d="M40 350Q180 330 310 260T720 310T1020 440" fill="none" stroke="#536c65" stroke-width="11"/>
+                  <path d="M40 350Q180 330 310 260T720 310T1020 440" fill="none" stroke="#a7ae85" stroke-width="1"/>
+                </g>
+                <rect width="1000" height="620" fill="url(#map-grid)"/>
+                <rect width="1000" height="620" fill="url(#map-grid-lg)"/>
+                <g fill="#25424b" stroke="#42616a" stroke-width="1.1" opacity=".8">
+                  <rect x="195" y="213" width="93" height="41" rx="3" transform="rotate(-9 195 213)"/>
+                  <rect x="280" y="355" width="65" height="60" rx="3"/>
+                  <rect x="595" y="175" width="125" height="74" rx="3" transform="rotate(7 595 175)"/>
+                  <rect x="735" y="410" width="93" height="54" rx="3"/>
+                  <rect x="135" y="430" width="71" height="52" rx="3"/>
+                  <rect x="840" y="195" width="69" height="49" rx="3"/>
+                </g>
+                <circle cx="500" cy="310" r="246" fill="none" stroke="#489d9b" stroke-dasharray="7 8" stroke-opacity=".53" stroke-width="1.5"/>
+                <circle cx="500" cy="310" r="143" fill="none" stroke="#3c8991" stroke-opacity=".35" stroke-width="1"/>
+                <circle cx="500" cy="310" r="61" fill="none" stroke="#3c8991" stroke-opacity=".3" stroke-width="1"/>
+                <path d="M500 64V556M254 310H746" fill="none" stroke="#4d8395" stroke-width="1" stroke-opacity=".24"/>
+                <rect x="437" y="288" width="126" height="42" rx="3" fill="#0e3b42" fill-opacity=".8" stroke="#3e8d83" stroke-dasharray="4 3"/>
+                <text x="500" y="304" fill="#78b7ac" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1.5">SITE CENTRE</text>
+                <text x="500" y="317" fill="#7caaaa" font-size="8" text-anchor="middle">REFERENCE ONLY</text>
+                <g id="trackMarkers"></g>
+                <g font-size="9" fill="#69909f" font-family="monospace" letter-spacing="1">
+                  <text x="25" y="42">12.920° N</text><text x="910" y="585">77.607° E</text>
+                  <text x="277" y="77">SECTOR NORTH</text><text x="772" y="554">SECTOR EAST</text>
+                </g>
+              </svg>
+              <div class="map-corner top-left"><span class="coord-cross">✣</span><span>TRAINING SECTOR 7</span><small>NOT A SURVEYED MAP</small></div>
+              <div class="map-corner top-right"><span class="scan-indicator"></span> OBSERVATION VIEW</div>
+              <div class="map-corner bottom-left"><span class="scale-icon">━</span> Approx. relative positioning</div>
+              <div class="map-corner bottom-right">WGS84 INPUT • SCHEMATIC PROJECTION</div>
+            </div>
+            <div class="map-legend"><span><i class="legend-point green"></i>Corroborated</span><span><i class="legend-point amber"></i>Unresolved</span><span><i class="legend-point red"></i>Contradicted</span><span class="legend-note">Map is not independent proof of location</span></div>
+          </div>
+          <aside class="inspect-panel">
+            <div class="panel-top"><div><span class="eyebrow">TRACK INSPECTOR</span><h2>Selected Aircraft</h2></div><span class="chip neutral" id="trackCountChip">—</span></div>
+            <div id="trackInspector" class="inspector-body"><div class="empty">Select an observed track.</div></div>
+          </aside>
+        </div>
+        <div class="bottom-grid">
+          <div class="table-card"><div class="panel-top"><div><span class="eyebrow">OBSERVATION REGISTRY</span><h2>Observed Aircraft</h2></div><button class="text-link" data-nav="tracks">All tracks →</button></div><div id="overviewTrackList" class="observed-list"></div></div>
+          <div class="table-card"><div class="panel-top"><div><span class="eyebrow">SECURITY EVENTS</span><h2>Activity Feed</h2></div><button class="text-link" data-nav="evidence">Full ledger →</button></div><div id="activityFeed" class="activity-feed"></div></div>
+        </div>
+      </section>
+
+      <section class="page" id="page-tracks"><div class="page-header"><div><div class="eyebrow">OBSERVATION / 02</div><h1>Aircraft & Tracks</h1><p>Reported targets, association status and source provenance</p></div><button class="btn primary" id="addObservationBtn"><svg><use href="#i-plus"/></svg> Add observation</button></div><div class="data-card"><div class="table-topline"><h2>Track Registry</h2><span>Observations ≠ verified aircraft identities</span></div><div class="scroll-table"><table><thead><tr><th>Track</th><th>Source</th><th>Coordinates</th><th>Identity</th><th>Association</th><th>Authorization</th><th>Observed</th></tr></thead><tbody id="tracksTable"></tbody></table></div></div></section>
+      <section class="page" id="page-missions"><div class="page-header"><div><div class="eyebrow">AUTHORIZATION / 03</div><h1>Mission Permits</h1><p>Local approval records are separate from cryptographic identity verification</p></div><button class="btn primary" id="createMissionBtn"><svg><use href="#i-plus"/></svg> New permit</button></div><div class="data-card"><div class="table-topline"><h2>Mission Register</h2><span>Approvals apply to declared identities and mission windows</span></div><div class="scroll-table"><table><thead><tr><th>Mission</th><th>Identity</th><th>Area</th><th>Start / End (UTC)</th><th>Status</th><th>Action</th></tr></thead><tbody id="missionsTable"></tbody></table></div></div></section>
+      <section class="page" id="page-identities"><div class="page-header"><div><div class="eyebrow">TRUST SERVICE / 04</div><h1>Identity Registry</h1><p>Operator-enrolled Ed25519 credentials; physical key protection is not assumed</p></div><button class="btn primary" id="enrollIdentityBtn"><svg><use href="#i-plus"/></svg> Enroll identity</button></div><div class="feature-note"><svg><use href="#i-lock"/></svg><span><b>Trust boundary:</b> An accepted Ed25519 proof establishes enrolled key possession only. PUF origin, airframe binding and issuer federation require separate evidence.</span></div><div class="data-card"><div class="table-topline"><h2>Enrolled Credentials</h2><span>No private keys are stored on the GCS</span></div><div class="scroll-table"><table><thead><tr><th>Identity</th><th>Issuer (operator declared)</th><th>Algorithm</th><th>Protection claim</th><th>Status</th><th>Action</th></tr></thead><tbody id="identitiesTable"></tbody></table></div></div></section>
+      <section class="page" id="page-incidents"><div class="page-header"><div><div class="eyebrow">SECURITY OPERATIONS / 05</div><h1>Incident Desk</h1><p>Review unresolved observations and document operator response</p></div></div><div id="incidentCards" class="incident-grid"></div></section>
+      <section class="page" id="page-sensors"><div class="page-header"><div><div class="eyebrow">INPUT MANAGEMENT / 06</div><h1>Sensor Inputs</h1><p>Sensor connectivity, provenance and integration status</p></div></div><div class="feature-note"><svg><use href="#i-radio"/></svg><span>No sensor is considered connected because sample data exists. Real observations require a genuine, authenticated adapter posting to the observation API.</span></div><div id="sensorCards" class="sensor-grid"></div><div class="data-card api-box"><h2>Adapter endpoint</h2><code>POST /api/observations</code><p>Adapters submit coordinates and measurement provenance. The core does not infer a cryptographic identity or physical association from submitted positions.</p></div></section>
+      <section class="page" id="page-evidence"><div class="page-header"><div><div class="eyebrow">AUDIT & FORENSICS / 07</div><h1>Evidence Ledger</h1><p>Append-only application events and local hash-chain validation</p></div><div class="header-actions"><button class="btn outline" id="verifyLedgerBtn"><svg><use href="#i-check"/></svg> Check integrity</button><button class="btn primary" id="exportLedgerBtn"><svg><use href="#i-download"/></svg> Export JSON</button></div></div><div class="feature-note"><svg><use href="#i-alert"/></svg><span><b>Prototype integrity:</b> SHA-256 hash chaining detects accidental or partial modification, but cannot survive a fully compromised host that rewrites the entire database. Off-box signed anchoring is NOT implemented.</span></div><div id="ledgerResult" class="ledger-result">Local integrity has not been checked.</div><div class="data-card"><div class="table-topline"><h2>Event History</h2><span>UTC timestamps / SHA-256 chaining</span></div><div class="scroll-table"><table><thead><tr><th>#</th><th>Time</th><th>Event</th><th>Detail</th><th>Source</th><th>Hash</th></tr></thead><tbody id="evidenceTable"></tbody></table></div></div></section>
+    </main>
+  </div>
+</div>
+<div class="scenario-menu hidden" id="scenarioMenu"><div class="scenario-head">TRAINING SCENARIOS <span>SYNTHETIC DATA</span></div><button data-scenario="unknown"><b>Unidentified aircraft</b><small>Unresolved target and operator incident</small></button><button data-scenario="conflict"><b>Identity-track conflict</b><small>Contradicted association, never auto-match</small></button><button data-scenario="clear"><b>Authorized evidence state</b><small>Restore fixture to corroborated status</small></button><button data-scenario="reset"><b>Reset training site</b><small>Restore default synthetic observations</small></button></div>
+<div class="modal-backdrop hidden" id="modal"><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="dialog-header"><div><div class="eyebrow" id="modalEyebrow">HROT OPERATOR ACTION</div><h2 id="modalTitle">Action</h2></div><button class="small-icon" id="modalClose"><svg><use href="#i-x"/></svg></button></div><div id="modalBody"></div></div></div>
+<div id="toastHost" aria-live="polite"></div>
+<script src="/assets/app.js" defer></script>
+</body>
+</html>
